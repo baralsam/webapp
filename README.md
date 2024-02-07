@@ -6,11 +6,11 @@ Nuid - 002825118
 
 These instructions will help you set up and run the project on your local machine.
 
-### Prerequisites
+## Prerequisites
 
 - Node.js and npm should be installed on your machine.
 
-### Installing
+## Installing
 
 1. Clone the repository:
 
