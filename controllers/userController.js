@@ -6,6 +6,9 @@ async function createUser(req, res) {
   try {
     const { email, password, firstName, lastName } = req.body;
     const existingUser = await User.findOne({ where: { email } });
+    if (!email || !password || !firstName || !lastName) {
+      return res.status(400).json({ error: 'Please provide values for all fields' });
+    }
     if (existingUser) {
       return res.status(400).json({ error: 'User with this email already exists' });
     }
@@ -39,7 +42,7 @@ async function getUsers(req, res) {
               return res.status(400).send();
           }
       const { password: _, ...userWithoutPassword } = req.user.toJSON();
-      return res.status(201).json(userWithoutPassword);
+      return res.status(200).json(userWithoutPassword);
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: 'Internal Server Error' });
