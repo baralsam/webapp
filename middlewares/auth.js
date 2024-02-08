@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcryptjs from "bcryptjs";
 import User from '../models/users.js';
 
 const authenticateUser = async (req, res, next) => {
@@ -14,7 +14,7 @@ const authenticateUser = async (req, res, next) => {
 
     const user = await User.findOne({ where: { email } });
 
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+    if (!user || !(await bcryptjs.compare(password, user.password))) {
       return res.status(401).json({ error: 'Unauthorized: Invalid credentials' });
     }
 

@@ -1,5 +1,5 @@
 import User from '../models/users.js';
-import bcrypt from 'bcrypt';
+import bcryptjs from "bcryptjs";
 import { v4 as uuidv4 } from 'uuid';
 
 async function createUser(req, res) {
@@ -21,7 +21,7 @@ async function createUser(req, res) {
     }
     const userId = uuidv4();
     const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const hashedPassword = await bcryptjs.hash(password, saltRounds);
     const newUser = await User.create({
       id: userId,
       email,
@@ -78,7 +78,7 @@ async function getUsers(req, res) {
       }
       if (password) {
         const saltRounds = 10;
-        updatedFields.password = await bcrypt.hash(password, saltRounds);
+        updatedFields.password = await bcryptjs.hash(password, saltRounds);
       }
       const updatedUser = await req.user.update(updatedFields);
       return res.status(204).send();
