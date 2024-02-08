@@ -12,11 +12,6 @@ async function createUser(req, res) {
       return res.status(400).json({ error: 'Bad Request: Invalid fields' });
     }
 
-    const duplicateFields = Object.keys(req.body).filter(field => field !== 'password' && field !== 'email');
-    if (duplicateFields.length > 0) {
-      return res.status(400).json({ error: `Bad Request: Duplicate fields found`});
-    }
-
     const existingUser = await User.findOne({ where: { email } });
     if (!email || !password || !firstName || !lastName) {
       return res.status(400).json({ error: 'Please provide values for all fields' });
@@ -73,11 +68,6 @@ async function getUsers(req, res) {
       if (invalidFields.length > 0) {
         return res.status(400).json({ error: 'Bad Request: Invalid fields' });
       }
-
-      const duplicateFields = Object.keys(req.body).filter(field => field !== 'password' );
-      if (duplicateFields.length > 0) {
-        return res.status(400).json({ error: `Bad Request: Duplicate fields found`});
-      } 
 
       const updatedFields = {};
       if (firstName) {
