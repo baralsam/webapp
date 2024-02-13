@@ -33,8 +33,4 @@ jobs:
       run: npm ci 
 
     - name: Run tests
-      run:  |
-          export DBNAME=$DBNAME
-          export DBUSER=$DBUSER
-          export DBPASSWORD=$DBPASSWORD
-          npm test
+      run:  npm test
