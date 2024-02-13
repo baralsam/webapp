@@ -1,12 +1,12 @@
 import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
-import mysql from 'mysql2/promise';
+import mysql2 from 'mysql2/promise';
 
 dotenv.config();
 
 export async function validateAndCreateDatabase() {
   try {
-    const connection =  mysql.createPool({
+    const connection =  mysql2.createPool({
       host: 'localhost',
       user: process.env.DBUSER,
       password: process.env.DBPASSWORD,
