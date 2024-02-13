@@ -26,7 +26,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        
+
+    - name: Start sql services
+      run: sudo systemctl start mysql.service
     - name: Installing dependencies    
       run: npm ci 
 
