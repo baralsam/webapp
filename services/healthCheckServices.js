@@ -6,7 +6,7 @@ dotenv.config();
 
 export async function validateAndCreateDatabase() {
   try {
-    const connection = await mysql.createPool({
+    const connection =  mysql.createPool({
       host: 'localhost',
       user: process.env.DBUSER,
       password: process.env.DBPASSWORD,
