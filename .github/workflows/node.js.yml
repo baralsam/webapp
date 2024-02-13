@@ -32,7 +32,7 @@ jobs:
 
     - name: Run tests
       run:  |
-            export DBNAME = $DBNAME
-            export DBUSER = $DBUSER
-            export DBPASSWORD = $DBPASSWORD
-            npm test
+          export DBNAME=$DBNAME
+          export DBUSER=$DBUSER
+          export DBPASSWORD=$DBPASSWORD
+          npm test
