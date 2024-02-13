@@ -17,10 +17,10 @@ describe('/v1/user Integration Tests', () => {
     const response = await request(app)
       .post('/v1/user')
       .send({
-        "email": "testuser3@example.com",
+        "email": "sam@gmail.com",
         "password": "password123",
-        "firstName": "John",
-        "lastName": "Doe"
+        "firstName": "Samiksha",
+        "lastName": "Baral"
       });
 
     expect(response.status).toBe(201);
@@ -29,7 +29,7 @@ describe('/v1/user Integration Tests', () => {
     const userId = response.body.id;
     const getUserResponse = await request(app)
       .get(`/v1/user/self`)
-      .auth('testuser3@example.com', 'password123');
+      .auth('sam@gmail.com', 'password123');
 
     expect(getUserResponse.status).toBe(200);
     expect(getUserResponse.body.id).toBe(userId);
@@ -38,7 +38,7 @@ describe('/v1/user Integration Tests', () => {
   it('Test 2: Update the account and validate the account was updated', async () => {
       const updateResponse = await request(app)
       .put(`/v1/user/self`)
-      .auth('testuser3@example.com', 'password123')
+      .auth('sam@gmail.com', 'password123')
       .send({
         firstName: 'UpdatedFirstName',
         lastName: 'UpdatedLastName',
@@ -48,7 +48,7 @@ describe('/v1/user Integration Tests', () => {
 
     const getUserResponse = await request(app)
       .get(`/v1/user/self`)
-      .auth('testuser3@example.com', 'password123');
+      .auth('sam@gmail.com', 'password123');
 
     expect(getUserResponse.status).toBe(200);
     expect(getUserResponse.body.firstName).toBe('UpdatedFirstName');

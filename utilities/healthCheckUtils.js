@@ -6,7 +6,7 @@ export const createExpressApp = async() => {
   const app = express();
   app.use(express.json());
   await validateAndCreateDatabase();
-  sequelize.sync({alter : true});
+  await sequelize.sync({alter : true});
   return app;
 };
 
