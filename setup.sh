@@ -7,7 +7,7 @@ sudo dnf install -y mysql-server
 sudo dnf install -y unzip
 
 
-# Start and enable MySQL service on boot
+# Start and enable MySQL service
 sudo systemctl start mysqld
 sudo systemctl enable mysqld
 
