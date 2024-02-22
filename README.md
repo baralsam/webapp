@@ -69,3 +69,22 @@ These instructions will help you set up and run the project on your local machin
     "lastName": "Baral",
     "password": "password"
 }'
+
+#### Assignemnt 3
+
+* Run Integration Tests -> npm test
+
+#### Assignemnt 4
+
+1. Packer Format
+
+    packer fmt packer.pkr.hcl
+
+2. Packer Build
+ 
+    packer build  packer.pkr.hcl
+
+3. To check service on google cloud console in SSH window of an instance
+
+    sudo journalctl -u csye6225.service     
+    

@@ -2,7 +2,10 @@
 
 # Update the package manager and install necessary packages
 sudo dnf update -y
-sudo dnf install -y unzip nodejs:20 mysql-server
+sudo dnf module install -y nodejs:20 
+sudo dnf install -y mysql-server
+sudo dnf install -y unzip
+
 
 # Start and enable MySQL service on boot
 sudo systemctl start mysqld
