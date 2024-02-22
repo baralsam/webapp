@@ -1,0 +1,39 @@
+packer {
+  required_plugins {
+    googlecompute = {
+      source  = "github.com/hashicorp/googlecompute"
+      version = "~> 1"
+    }
+  }
+}
+
+source "googlecompute" "custom" {
+  project_id    = "clod-assignment"
+  source_image_family  = "centos-stream-8"
+  machine_type  = "n1-standard-1"
+  image_name    = "custom-node-app-image-${formatdate("YYYY-MM-DD-hh-mm-ss", timestamp())}"
+  image_description  = "Machine Image with Node.js and MySQL on CentOS Stream 8"
+  image_family = "centos-family"
+  ssh_username  = "centos"
+  zone          = "us-east1-b"
+  use_internal_ip    = false
+  network            = "default"
+}
+
+build {
+  sources = ["googlecompute.custom"]
+
+  provisioner "file" {
+    source      = "./webapp.zip"
+    destination = "/tmp/webapp.zip"
+  }
+
+  provisioner "file" {
+    source      = "./csye6225.service"
+    destination = "/tmp/csye6225.service"
+  }
+
+  provisioner "shell" {
+    script = "./setup.sh"
+  }
+}

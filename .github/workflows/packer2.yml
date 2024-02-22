@@ -1,0 +1,30 @@
+name: 'Packer Validation'
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  packer_validation:
+    name: 'Packer Validation'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Setup Packer
+      uses: hashicorp/setup-packer@main
+      id: setup
+      with:
+        version: "1.10.1"
+
+    - name: Initialize Packer Config
+      run: packer init .
+
+    - name: Format Packer Config
+      run: packer fmt -check packer.pkr.hcl
+
+    - name: Validate Packer Config
+      run: packer validate packer.pkr.hcl
