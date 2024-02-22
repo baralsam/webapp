@@ -12,7 +12,7 @@ source "googlecompute" "custom" {
   source_image_family = "centos-stream-8"
   machine_type        = "n1-standard-1"
   image_name          = "custom-node-app-image-${formatdate("YYYY-MM-DD-hh-mm-ss", timestamp())}"
-  image_description   = "Machine Image with Node.js and MySQL on CentOS Stream 8"
+  image_description   = "Custom Image on CentOS Stream 8"
   image_family        = "centos-family"
   ssh_username        = "centos"
   zone                = "us-east1-b"
