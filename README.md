@@ -1,5 +1,5 @@
 # Cloud Assignment - Cloud Native Web Application 
-Name - Samiksha S Baral
+Name - Samiksha Sanjay Baral
 Nuid - 002825118
 
 ## Getting Started
