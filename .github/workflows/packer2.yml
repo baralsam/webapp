@@ -8,18 +8,18 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
 
+    env:
+      DBUSER: ${{ secrets.DBUSER }}
+      DBPASSWORD: ${{ secrets.DBPASSWORD }}
+      DBNAME: ${{ secrets.DBNAME }}    
+      DBURL: ${{ secrets.DBURL }}
+
     steps:
     - uses: actions/checkout@v2
     - name: Set Up Node.js
       uses: actions/setup-node@v2
       with:
         node-version: 20
-
-    env:
-      DBUSER: ${{ secrets.DBUSER }}
-      DBPASSWORD: ${{ secrets.DBPASSWORD }}
-      DBNAME: ${{ secrets.DBNAME }}    
-      DBURL: ${{ secrets.DBURL }}
 
     - name: Start MySQL Services
       run: sudo systemctl start mysql.service 
