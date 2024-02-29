@@ -7,7 +7,7 @@ dotenv.config();
 export async function validateAndCreateDatabase() {
   try {
     const connection =  mysql2.createPool({
-      host: 'localhost',
+      host: process.env.DBURL,
       user: process.env.DBUSER,
       password: process.env.DBPASSWORD,
     });
@@ -19,7 +19,7 @@ export async function validateAndCreateDatabase() {
 }
 
 export const sequelize = new Sequelize(process.env.DBNAME, process.env.DBUSER, process.env.DBPASSWORD, {
-  host: 'localhost',
+  host: process.env.DBURL,
   dialect: 'mysql'
 });
 

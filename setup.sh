@@ -3,16 +3,7 @@
 # Update the package manager and install necessary packages
 sudo dnf update -y
 sudo dnf module install -y nodejs:20 
-sudo dnf install -y mysql-server
 sudo dnf install -y unzip
-
-
-# Start and enable MySQL service
-sudo systemctl start mysqld
-sudo systemctl enable mysqld
-
-# Set MySQL root password
-sudo mysql --connect-expired-password -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';"
 
 # Create a user for the application
 sudo adduser csye6225 --user-group --shell /usr/sbin/nologin
