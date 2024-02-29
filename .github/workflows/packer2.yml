@@ -15,6 +15,9 @@ jobs:
       with:
         node-version: 20
 
+    - name: Start MySQL Services
+      run: sudo systemctl start mysql.service 
+
     - name: Install Dependencies    
       run: npm install
 
