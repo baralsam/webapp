@@ -28,6 +28,7 @@ jobs:
         echo DBUSER=${{ secrets.DBUSER }} >> .env
         echo DBPASSWORD=${{ secrets.DBPASSWORD }} >> .env
         echo DBNAME=${{ secrets.DBNAME }} >> .env
+        echo DBURL=${{ secrets.DBURL }} >> .env
 
     - name: Zip Webapp 
       run: zip -r webapp.zip ./
