@@ -15,6 +15,12 @@ jobs:
       with:
         node-version: 20
 
+    env:
+      DBUSER: ${{ secrets.DBUSER }}
+      DBPASSWORD: ${{ secrets.DBPASSWORD }}
+      DBNAME: ${{ secrets.DBNAME }}    
+      DBURL: ${{ secrets.DBURL }}
+
     - name: Start MySQL Services
       run: sudo systemctl start mysql.service 
 
@@ -23,15 +29,6 @@ jobs:
 
     - name: Run Tests
       run: npm test
-
-    - name: Create Environment Variables File
-      run: |
-        echo > .env
-        ls -al | grep .env
-        echo DBUSER=${{ secrets.DBUSER }} >> .env
-        echo DBPASSWORD=${{ secrets.DBPASSWORD }} >> .env
-        echo DBNAME=${{ secrets.DBNAME }} >> .env
-        echo DBURL=${{ secrets.DBURL }} >> .env
 
     - name: Zip Webapp 
       run: zip -r webapp.zip ./

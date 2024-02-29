@@ -18,6 +18,7 @@ jobs:
       DBUSER: ${{ secrets.DBUSER }}
       DBPASSWORD: ${{ secrets.DBPASSWORD }}
       DBNAME: ${{ secrets.DBNAME }}
+      DBURL: ${{ secrets.DBURL }}
 
     steps:
     - uses: actions/checkout@v3
