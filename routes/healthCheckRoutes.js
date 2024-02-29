@@ -10,7 +10,7 @@ router.use('/healthz', (req, res, next) => {
     next();
   });
 
-  router.route('/healthz')
+  router.route('')
   .get(healthCheckController)
   .all((req, res) => {
     res.status(405).send();
