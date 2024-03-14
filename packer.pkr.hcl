@@ -15,7 +15,7 @@ source "googlecompute" "custom" {
   image_description   = "Custom Image on CentOS Stream 8"
   image_family        = "centos-family"
   ssh_username        = "centos"
-  zone                = "us-east1-b"
+  zone                = "us-east1-c"
   use_internal_ip     = false
   network             = "default"
 }
