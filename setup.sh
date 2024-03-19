@@ -9,7 +9,7 @@ sudo dnf install -y unzip
 sudo adduser csye6225 --user-group --shell /usr/sbin/nologin
 
 # Define application directory
-app_dir="/opt/app"
+app_dir="/new/app"
 
 # Create and navigate to the application directory
 sudo mkdir -p "$app_dir"
