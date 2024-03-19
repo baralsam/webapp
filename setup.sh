@@ -36,5 +36,5 @@ sudo systemctl daemon-reload
 sudo systemctl enable csye6225.service
 
 #Install ops agent 
-curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
+sudo curl -O https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
 sudo bash add-google-cloud-ops-agent-repo.sh --also-install
