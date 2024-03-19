@@ -9,7 +9,7 @@ sudo dnf install -y unzip
 sudo adduser csye6225 --user-group --shell /usr/sbin/nologin
 
 # Define application directory
-app_dir="/new/app"
+app_dir="/opt/app"
 
 # Create and navigate to the application directory
 sudo mkdir -p "$app_dir"
@@ -34,3 +34,10 @@ sudo systemctl daemon-reload
 
 # Enable the application service on boot
 sudo systemctl enable csye6225.service
+
+#Install ops agent 
+curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
+sudo bash add-google-cloud-ops-agent-repo.sh --also-install
+sudo yum install -y ops-agent
+sudo /opt/google-cloud-ops-agent/agent/bin/stackdriver-agent --configure --mode=install
+sudo systemctl restart stackdriver-agent
