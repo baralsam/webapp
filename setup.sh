@@ -35,6 +35,10 @@ sudo systemctl daemon-reload
 # Enable the application service on boot
 sudo systemctl enable csye6225.service
 
-#Install ops agent 
+# Install ops agent 
 sudo curl -O https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
 sudo bash add-google-cloud-ops-agent-repo.sh --also-install
+
+# Copy the config yaml and restart google cloud ops agent
+sudo cp /etc/google-cloud-ops-agent/config.yaml/tmp/config.yaml 
+sudo systemctl restart google-cloud-ops-agent

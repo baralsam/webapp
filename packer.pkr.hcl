@@ -33,7 +33,13 @@ build {
     destination = "/tmp/csye6225.service"
   }
 
+  provisioner "file" {
+    source      = "./config.yaml"
+    destination = "/tmp/config.yaml"
+  }
+
   provisioner "shell" {
     script = "./setup.sh"
   }
+
 }
