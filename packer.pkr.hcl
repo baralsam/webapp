@@ -10,12 +10,12 @@ packer {
 source "googlecompute" "custom" {
   project_id          = "clod-assignment"
   source_image_family = "centos-stream-8"
-  machine_type        = "n1-standard-1"
+  machine_type        = "e2-medium"
   image_name          = "custom-node-app-image-${formatdate("YYYY-MM-DD-hh-mm-ss", timestamp())}"
   image_description   = "Custom Image on CentOS Stream 8"
   image_family        = "centos-family"
   ssh_username        = "centos"
-  zone                = "e2-medium"
+  zone                = "us-east1-c"
   use_internal_ip     = false
   network             = "default"
 }
