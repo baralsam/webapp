@@ -42,4 +42,6 @@ sudo bash add-google-cloud-ops-agent-repo.sh --also-install
 # Copy the config yaml and restart google cloud ops agent
 sudo cp /tmp/config.yaml /etc/google-cloud-ops-agent/config.yaml 
 
+sudo mkdir /var/log/webapp
+
 sudo chown -R csye6225:csye6225 /var/log/webapp
