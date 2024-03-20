@@ -2,6 +2,14 @@ import request from 'supertest';
 import { createExpressApp } from './utilities/healthCheckUtils.js';
 import healthCheckRoutes from './routes/healthCheckRoutes.js';
 
+jest.mock('./utilities/logger.js', () => {
+  return {
+    error: jest.fn(),
+    warn: jest.fn(),
+    info: jest.fn(),
+    debug: jest.fn()
+  };
+});
 let app;
 
 
