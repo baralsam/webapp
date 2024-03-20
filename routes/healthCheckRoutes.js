@@ -14,14 +14,14 @@ router.use('/healthz', (req, res, next) => {
   router.route('')
   .get(healthCheckController)
   .all((req, res) => {
-    logger.error("Method not found for healthz");
+    logger.error("Method not allowed for healthz");
     res.status(405).send();
   });
 
   router
   .route('*')
   .all((req, res) => {
-    logger.error("Method not found for healthz");
+    logger.error("Request not allowed for healthz");
     res.status(404).send();
   });
 

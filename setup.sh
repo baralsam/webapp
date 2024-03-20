@@ -39,9 +39,7 @@ sudo systemctl enable csye6225.service
 sudo curl -O https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
 sudo bash add-google-cloud-ops-agent-repo.sh --also-install
 
-# Copy the config yaml and restart google cloud ops agent
+# Copy the config yaml and create new folder to store logs
 sudo cp /tmp/config.yaml /etc/google-cloud-ops-agent/config.yaml 
-
 sudo mkdir /var/log/webapp
-
 sudo chown -R csye6225:csye6225 /var/log/webapp

@@ -13,10 +13,11 @@ export const healthCheckController = async (req, res) => {
       return res.status(400).send();
     }
     await sequelize.authenticate();
-    logger.info("Sequelize Connection Succesful");
+    logger.debug("Sequelize Authetication Successful")
+    logger.info("Healthz requet Successful");
     res.status(200).send();
   } catch (error) {
-    logger.error("Sequelize Connection Error");
+    logger.error("Request Error for healthz");
     res.status(503).send();
   }
 };

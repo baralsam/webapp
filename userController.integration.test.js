@@ -2,6 +2,7 @@ import request from 'supertest';
 import { createExpressApp } from './utilities/healthCheckUtils.js';
 import userRoutes from './routes/userRoutes.js';
 import { sequelize } from './services/healthCheckServices.js';
+
 jest.mock('./utilities/logger.js', () => {
   return {
     error: jest.fn(),
