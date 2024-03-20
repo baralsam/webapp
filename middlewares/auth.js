@@ -5,6 +5,7 @@ const authenticateUser = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Basic ')) {
+      logger.error("Invalid authorization");
       return res.status(401).json({ error: 'Unauthorized: Missing or invalid credentials' });
     }
 
@@ -15,6 +16,7 @@ const authenticateUser = async (req, res, next) => {
     const user = await User.findOne({ where: { email } });
 
     if (!user || !(await bcryptjs.compare(password, user.password))) {
+      logger.error("Invalid Credentials");
       return res.status(401).json({ error: 'Unauthorized: Invalid credentials' });
     }
 
@@ -22,7 +24,7 @@ const authenticateUser = async (req, res, next) => {
 
     next();
   } catch (error) {
-    console.error(error);
+    logger.error("Internal Server Error");
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 };

@@ -3,15 +3,15 @@ logging:
     my-app-receiver:
       type: files
       include_paths:
-        - /logs/csye6225.log
+        - /var/logs/csye6225.log
       record_log_file_path: true
   processors:
     my-app-processor:
       type: parse_json
       time_key: time
-      time_format: "%Y-%m-%dT%H:%M:%S.%L%Z"
+      time_format: "%Y-%m-%dT%H:%M:%S.%L"
   service:
     pipelines:
       default_pipeline:
         receivers: [my-app-receiver]
-        processors: [my-app-processor]
+        processors: [my-app-processor,move_severity]

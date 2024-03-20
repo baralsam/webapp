@@ -1,6 +1,7 @@
 import User from '../models/users.js';
 import bcryptjs from "bcryptjs";
 import { v4 as uuidv4 } from 'uuid';
+import logger from "../utilities/logger.js";
 
 async function createUser(req, res) {
   try {
@@ -9,14 +10,17 @@ async function createUser(req, res) {
     const allowedFields = ['firstName', 'lastName', 'password', 'email'];
     const invalidFields = Object.keys(otherFields).filter(field => !allowedFields.includes(field));
     if (invalidFields.length > 0) {
+      logger.error("Invalid fields provided while creating a user");
       return res.status(400).json({ error: 'Bad Request: Invalid fields' });
     }
 
     const existingUser = await User.findOne({ where: { email } });
     if (!email || !password || !firstName || !lastName) {
+      logger.error("Please provide values for all fields");
       return res.status(400).json({ error: 'Please provide values for all fields' });
     }
     if (existingUser) {
+      logger.error("User with this email already exists");
       return res.status(400).json({ error: 'User with this email already exists' });
     }
     const userId = uuidv4();
@@ -30,28 +34,34 @@ async function createUser(req, res) {
       lastName,
     });
     const { password: _, ...userWithoutPassword } = newUser.toJSON();
+    logger.info("User created successfully");
     return res.status(201).json(userWithoutPassword);
   } catch (error) {
-    console.error(error);
+    logger.error("Internal Server Error");
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
+
 async function getUsers(req, res) {
     try {
       if (!req.user) {
+        logger.error("User not found");
         return res.status(401).json({ error: 'Unauthorized: User not found' });
       }
       const contentType = req.headers['content-type'];
       if(contentType ) { 
+              logger.error("Invalid request headers while fetching a user");
               return res.status(400).send();
             }
           if(Object.keys(req.body).length > 0 || Object.keys(req.query).length > 0){   
+              logger.error("Invalid request body while fetching a user");
               return res.status(400).send();
           }
       const { password: _, ...userWithoutPassword } = req.user.toJSON();
+      logger.info("User fetched successsfully");
       return res.status(200).json(userWithoutPassword);
     } catch (error) {
-      console.error(error);
+      logger.error("Internal Server Error");
       return res.status(500).json({ error: 'Internal Server Error' });
     }
   }
@@ -59,6 +69,7 @@ async function getUsers(req, res) {
   async function updateUser(req, res) {
     try {
       if (!req.user) {
+        logger.error("User not found");
         return res.status(401).json({ error: 'Unauthorized: User not found' });
       }
       const { firstName, lastName, password, ...otherFields } = req.body;
@@ -66,6 +77,7 @@ async function getUsers(req, res) {
       const invalidFields = Object.keys(otherFields).filter(field => !allowedFields.includes(field));
   
       if (invalidFields.length > 0) {
+        logger.error("Invalid fields while updating a user");
         return res.status(400).json({ error: 'Bad Request: Invalid fields' });
       }
 
@@ -81,9 +93,10 @@ async function getUsers(req, res) {
         updatedFields.password = await bcryptjs.hash(password, saltRounds);
       }
       const updatedUser = await req.user.update(updatedFields);
+      logger.info("User updated succesfully");
       return res.status(204).send();
     } catch (error) {
-      console.error(error);
+      logger.error("Internal Server Error");
       return res.status(400).send();
     }
   }  

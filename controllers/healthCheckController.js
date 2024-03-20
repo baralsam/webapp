@@ -5,17 +5,18 @@ export const healthCheckController = async (req, res) => {
   try {
     const contentType = req.headers["content-type"];
     if (contentType) {
+      logger.error("Invalid request headers for healthz");
       return res.status(400).send();
     }
     if (Object.keys(req.body).length > 0 || Object.keys(req.query).length > 0) {
-      logger.error("Checking healthz endpoint");
+      logger.error("Invalid request body for healthz");
       return res.status(400).send();
     }
     await sequelize.authenticate();
-    console.log("Sequelize Connection Succesful");
+    logger.info("Sequelize Connection Succesful");
     res.status(200).send();
   } catch (error) {
-    console.error("Sequelize Connection Error");
+    logger.error("Sequelize Connection Error");
     res.status(503).send();
   }
 };
