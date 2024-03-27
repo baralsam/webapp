@@ -1,5 +1,6 @@
 import bcryptjs from "bcryptjs";
 import User from '../models/users.js';
+import logger from "../utilities/logger.js";
 
 const authenticateUser = async (req, res, next) => {
   try {

@@ -2,6 +2,9 @@ import User from '../models/users.js';
 import bcryptjs from "bcryptjs";
 import { v4 as uuidv4 } from 'uuid';
 import logger from "../utilities/logger.js";
+import { PubSub } from '@google-cloud/pubsub';
+
+const pubSubClient = new PubSub({ projectId: 'clod-assignment' });
 
 async function createUser(req, res) {
   try {
@@ -32,13 +35,28 @@ async function createUser(req, res) {
       password: hashedPassword,
       firstName,
       lastName,
+      isVerified: false
     });
+    await publishMessage(userId,newUser.email, newUser.firstName, newUser.lastName);
     const { password: _, ...userWithoutPassword } = newUser.toJSON();
     logger.info("User created successfully");
     return res.status(201).json(userWithoutPassword);
   } catch (error) {
     logger.error("Internal Server Error");
     return res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+
+async function publishMessage(userId,email, firstName, lastName) {
+  const topicName = 'verify_email'; 
+  const data = JSON.stringify({ userId, email, firstName, lastName });
+  const dataBuffer = Buffer.from(data);
+
+  try {
+    await pubSubClient.topic(topicName).publish(dataBuffer);
+    logger.info("Message published successfully to Pub/Sub");
+  } catch (error) {
+    logger.error("Error publishing message to Pub/Sub:", error);
   }
 }
 
@@ -72,6 +90,7 @@ async function getUsers(req, res) {
         logger.error("User not found");
         return res.status(401).json({ error: 'Unauthorized: User not found' });
       }
+      
       const { firstName, lastName, password, ...otherFields } = req.body;
       const allowedFields = ['firstName', 'lastName', 'password'];
       const invalidFields = Object.keys(otherFields).filter(field => !allowedFields.includes(field));
@@ -101,4 +120,27 @@ async function getUsers(req, res) {
     }
   }  
 
-export { createUser, getUsers, updateUser };
+  async function verifyUser(req, res) {
+    const { token, timestamp } = req.query; 
+    const user = await User.findOne({ where: { id:token } });
+  
+    if (!user) {
+      return res.status(400).send('Invalid token');
+    }
+  
+    const now = new Date();
+    const verificationSentAt = new Date(timestamp); 
+    const diffInMinutes = (now - verificationSentAt) / 1000 / 60;
+  
+    if (diffInMinutes > 2) {
+      return res.status(400).send('Token expired');
+    }
+    user.verificationClickedAt = now;
+    user.isVerified = true;
+    await user.save();
+  
+    res.send('Email verified successfully. Your account is now activated.');
+  }
+  
+
+export { createUser, getUsers, updateUser, verifyUser };

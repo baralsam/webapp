@@ -30,7 +30,17 @@ const User = sequelize.define('User', {
   },
   account_updated: {
     type: Sequelize.DATE
-  }
+  },
+  verificationSentAt: {
+    type: Sequelize.DATE
+  },
+  verificationClickedAt: {
+    type: Sequelize.DATE
+  },
+  isVerified: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+  }  
 },
 {
     createdAt: 'account_created',
