@@ -21,6 +21,12 @@ const authenticateUser = async (req, res, next) => {
       return res.status(401).json({ error: 'Unauthorized: Invalid credentials' });
     }
 
+    if(process.env.ENV=='PRODUCTION')
+    if (!user.isVerified) {
+      logger.error("User not verified");
+      return res.status(403).json({ error: 'Forbidden: User not verified' });
+    }
+
     req.user = user;
 
     next();

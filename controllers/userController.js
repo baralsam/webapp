@@ -65,7 +65,8 @@ async function getUsers(req, res) {
       if (!req.user) {
         logger.error("User not found");
         return res.status(401).json({ error: 'Unauthorized: User not found' });
-      }
+      } 
+      
       const contentType = req.headers['content-type'];
       if(contentType ) { 
               logger.error("Invalid request headers while fetching a user");
@@ -90,7 +91,7 @@ async function getUsers(req, res) {
         logger.error("User not found");
         return res.status(401).json({ error: 'Unauthorized: User not found' });
       }
-      
+
       const { firstName, lastName, password, ...otherFields } = req.body;
       const allowedFields = ['firstName', 'lastName', 'password'];
       const invalidFields = Object.keys(otherFields).filter(field => !allowedFields.includes(field));
@@ -121,19 +122,20 @@ async function getUsers(req, res) {
   }  
 
   async function verifyUser(req, res) {
-    const { token, timestamp } = req.query; 
+    const token = req.query.token; 
     const user = await User.findOne({ where: { id:token } });
   
     if (!user) {
       return res.status(400).send('Invalid token');
     }
   
-    const now = new Date();
-    const verificationSentAt = new Date(timestamp); 
-    const diffInMinutes = (now - verificationSentAt) / 1000 / 60;
+    const now = new Date(); // Current UTC time
+    const verificationSentAt = new Date(user.verificationSentAt); 
+    const diffInMilliseconds = now.getTime() - verificationSentAt.getTime();
+    const diffInMinutes = diffInMilliseconds / (1000 * 60); // Convert milliseconds to minutes
   
     if (diffInMinutes > 2) {
-      return res.status(400).send('Token expired');
+        return res.status(400).send('Token expired');
     }
     user.verificationClickedAt = now;
     user.isVerified = true;
