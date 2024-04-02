@@ -23,6 +23,7 @@ const authenticateUser = async (req, res, next) => {
 
     if(process.env.ENV=='PRODUCTION')
     if (!user.isVerified) {
+      logger.debug("This is the host"+`${process.env.host}`);
       logger.error("User not verified");
       return res.status(403).json({ error: 'Forbidden: User not verified' });
     }
