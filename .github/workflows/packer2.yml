@@ -98,13 +98,13 @@ jobs:
  
     - name: Start Rolling Update
       run: |
-        gcloud compute instance-groups managed rolling-action start-update webapp-instance-region-group-manager \
+        gcloud compute instance-groups managed rolling-action start-update webapp-instance-group-manager \
         --version='template=projects/clod-assignment/regions/us-east1/instanceTemplates/instance-template-${{ env.VERSION }}' \
         --region="us-east1" \
         --project="clod-assignment" \
  
     - name: Wait for refresh to complete
       run: |
-        gcloud compute instance-groups managed wait-until webapp-instance-region-group-manager \
+        gcloud compute instance-groups managed wait-until webapp-instance-group-manager \
         --version-target-reached \
         --region us-east1
