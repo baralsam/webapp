@@ -13,6 +13,7 @@ jobs:
       DBPASSWORD: ${{ secrets.DBPASSWORD }}
       DBNAME: ${{ secrets.DBNAME }}    
       DBURL: ${{ secrets.DBURL }}
+      ENV: ${{ secrets.ENV }}
 
     steps:
     - uses: actions/checkout@v2
@@ -91,7 +92,7 @@ jobs:
         echo "DATABASEURL=10.73.0.2" >> /new/app/.env
         echo "DATABASEPASSWORD=ApBv6ACu7kN6U02s" >> /new/app/.env
         echo "DATABASENAME=healthcheck" >> /new/app/.env
-        echo "ENVRUN=PRODUCTION" >> /new/app/.env
+        echo "ENV=PRODUCTION" >> /new/app/.env
         EOF
         )
  
