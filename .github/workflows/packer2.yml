@@ -71,7 +71,7 @@ jobs:
       run: |
         gcloud compute instance-templates create "instance-template-${{ env.VERSION }}" \
         --project="clod-assignment" \
-        --image="custom-node-app-image-2024-04-02-19-02-59" \
+        --image=${{ env.IMAGE_ID }} \
         --network="vpc1" \
         --subnet="webapp" \
         --machine-type="e2-medium" \
@@ -81,7 +81,7 @@ jobs:
         --boot-disk-type="pd-balanced" \
         --boot-disk-size=20GB \
         --instance-template-region=us-east1 \
-        --boot-disk-kms-key=projects/clod-assignment/locations/us-east1/keyRings/webapp-kms-keyring-4f0ce0c8/cryptoKeys/webapp-kms-key \
+        --boot-disk-kms-key=projects/clod-assignment/locations/us-east1/keyRings/${{secrets.KEY_KMS}}/cryptoKeys/webapp-kms-key \
         --boot-disk-device-name=webapp-template-instance \
         --maintenance-policy="MIGRATE" \
         --service-account="vm-service-account@clod-assignment.iam.gserviceaccount.com" \
@@ -89,8 +89,8 @@ jobs:
         --metadata-from-file startup-script=<(cat <<EOF
         sudo touch /new/app/.env
         echo "DATABASEUSERNAME=webapp-db-user" >> /new/app/.env
-        echo "DATABASEURL=10.73.0.2" >> /new/app/.env
-        echo "DATABASEPASSWORD=ApBv6ACu7kN6U02s" >> /new/app/.env
+        echo "DATABASEURL=${{secrets.DATABASEURL}}" >> /new/app/.env
+        echo "DATABASEPASSWORD=${{secrets.DATABASEPASSWORD}}" >> /new/app/.env
         echo "DATABASENAME=healthcheck" >> /new/app/.env
         echo "ENV=PRODUCTION" >> /new/app/.env
         EOF
