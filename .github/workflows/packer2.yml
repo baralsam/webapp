@@ -56,3 +56,54 @@ jobs:
 
     - name: Build Image with Packer
       run: packer build packer.pkr.hcl
+
+    - name: Get Image id
+      run: |
+        IMAGE_ID=$(jq -r '.builds[-1].artifact_id' packer-manifest.json | cut -d ":" -f2)
+        echo "IMAGE_ID=$IMAGE_ID" >> $GITHUB_ENV
+        echo "Built GCP image ID is $IMAGE_ID"
+ 
+    - name: Generate version number
+      run: echo "VERSION=$(date +%s)" >> $GITHUB_ENV
+ 
+    - name: New Instance Template
+      run: |
+        gcloud compute instance-templates create "instance-template-${{ env.VERSION }}" \
+        --project="clod-assignment" \
+        --image="${{ custom-node-app-image-2024-04-02-19-02-59 }}" \
+        --network="vpc1" \
+        --subnet="subnet1" \
+        --machine-type="e2-medium" \
+        --network-tier="PREMIUM" \
+        --region="us-east1" \
+        --tags="webapp" \
+        --boot-disk-type="pd-balanced" \
+        --boot-disk-size=20GB \
+        --instance-template-region=us-east1 \
+        --boot-disk-kms-key=projects/clod-assignment/locations/us-east1/keyRings/webapp-kms-keyring-4f0ce0c8/cryptoKeys/webapp-kms-key \
+        --boot-disk-device-name=webapp-template-instance \
+        --maintenance-policy="MIGRATE" \
+        --service-account="vm-service-account@clod-assignment.iam.gserviceaccount.com" \
+        --scopes=logging-write,monitoring-write,cloud-platform,pubsub \
+        --metadata-from-file startup-script=<(cat <<EOF
+        sudo touch /new/app/.env
+        echo "DATABASEUSERNAME=webapp-db-user" >> /new/app/.env
+        echo "DATABASEURL=10.73.0.2" >> /new/app/.env
+        echo "DATABASEPASSWORD=ApBv6ACu7kN6U02s" >> /new/app/.env
+        echo "DATABASENAME=healthcheck" >> /new/app/.env
+        echo "ENVRUN=PRODUCTION" >> /new/app/.env
+        EOF
+        )
+ 
+    - name: Start Rolling Update
+      run: |
+        gcloud compute instance-groups managed rolling-action start-update webapp-instance-region-group-manager \
+        --version='template=projects/clod-assignment/regions/us-east1/instanceTemplates/instance-template-${{ env.VERSION }}' \
+        --region="us-east1" \
+        --project="clod-assignment" \
+ 
+    - name: Wait for refresh to complete
+      run: |
+        gcloud compute instance-groups managed wait-until webapp-instance-region-group-manager \
+        --version-target-reached \
+        --region us-east1
