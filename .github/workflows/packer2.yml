@@ -71,7 +71,7 @@ jobs:
       run: |
         gcloud compute instance-templates create "instance-template-${{ env.VERSION }}" \
         --project="clod-assignment" \
-        --image="${{ custom-node-app-image-2024-04-02-19-02-59 }}" \
+        --image="custom-node-app-image-2024-04-02-19-02-59" \
         --network="vpc1" \
         --subnet="subnet1" \
         --machine-type="e2-medium" \
