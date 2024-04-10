@@ -55,8 +55,8 @@ jobs:
     - name: Validate Packer Config
       run: packer validate packer.pkr.hcl
 
-    # - name: Build Image with Packer
-    #   run: packer build packer.pkr.hcl
+    - name: Build Image with Packer
+      run: packer build packer.pkr.hcl
 
     - name: Get Image id
       run: |
