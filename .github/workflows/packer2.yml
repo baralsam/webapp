@@ -73,7 +73,7 @@ jobs:
         --project="clod-assignment" \
         --image="custom-node-app-image-2024-04-02-19-02-59" \
         --network="vpc1" \
-        --subnet="subnet1" \
+        --subnet="webapp" \
         --machine-type="e2-medium" \
         --network-tier="PREMIUM" \
         --region="us-east1" \
