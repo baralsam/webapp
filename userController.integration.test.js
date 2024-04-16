@@ -16,14 +16,14 @@ let app;
 
 beforeAll(async () => {
   app = await createExpressApp();
-  app.use('/v1/user', userRoutes);
+  app.use('/v2/user', userRoutes);
 });
 
 describe('/v1/user Integration Tests', () => {
 
   it('Test 1: Create an account and validate account exists', async () => {
     const response = await request(app)
-      .post('/v1/user')
+      .post('/v2/user')
       .send({
         "email": "sam@gmail.com",
         "password": "password123",
@@ -36,7 +36,7 @@ describe('/v1/user Integration Tests', () => {
 
     const userId = response.body.id;
     const getUserResponse = await request(app)
-      .get(`/v1/user/self`)
+      .get(`/v2/user/self`)
       .auth('sam@gmail.com', 'password123');
 
     expect(getUserResponse.status).toBe(200);
@@ -45,7 +45,7 @@ describe('/v1/user Integration Tests', () => {
 
   it('Test 2: Update the account and validate the account was updated', async () => {
       const updateResponse = await request(app)
-      .put(`/v1/user/self`)
+      .put(`/v2/user/self`)
       .auth('sam@gmail.com', 'password123')
       .send({
         firstName: 'UpdatedFirstName',
@@ -55,7 +55,7 @@ describe('/v1/user Integration Tests', () => {
     expect(updateResponse.status).toBe(204);
 
     const getUserResponse = await request(app)
-      .get(`/v1/user/self`)
+      .get(`/v2/user/self`)
       .auth('sam@gmail.com', 'password123');
 
     expect(getUserResponse.status).toBe(200);

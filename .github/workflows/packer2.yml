@@ -60,7 +60,7 @@ jobs:
 
     - name: Get Image id
       run: |
-        IMAGE_ID=$(jq -r '.builds[-1].artifact_id' packer-manifest.json | cut -d ":" -f2)
+        IMAGE_ID=$(jq -r '.builds[-1].artifact_id' manifest.json | cut -d ":" -f2)
         echo "IMAGE_ID=$IMAGE_ID" >> $GITHUB_ENV
         echo "Built GCP image ID is $IMAGE_ID"
  
@@ -88,10 +88,10 @@ jobs:
         --scopes=logging-write,monitoring-write,cloud-platform,pubsub \
         --metadata-from-file startup-script=<(cat <<EOF
         sudo touch /new/app/.env
-        echo "DATABASEUSERNAME=webapp-db-user" >> /new/app/.env
-        echo "DATABASEURL=${{secrets.DATABASEURL}}" >> /new/app/.env
-        echo "DATABASEPASSWORD=${{secrets.DATABASEPASSWORD}}" >> /new/app/.env
-        echo "DATABASENAME=healthcheck" >> /new/app/.env
+        echo "DBUSER=webapp-db-user" >> /new/app/.env
+        echo "DBURL=${{secrets.DATABASEURL}}" >> /new/app/.env
+        echo "DBPASSWORD=${{secrets.DATABASEPASSWORD}}" >> /new/app/.env
+        echo "DBNAME=healthcheck" >> /new/app/.env
         echo "ENV=PRODUCTION" >> /new/app/.env
         EOF
         )

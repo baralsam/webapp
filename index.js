@@ -6,7 +6,7 @@ import logger from "./utilities/logger.js";
 const app = await createExpressApp();
 
 app.use('/healthz', healthCheckRoutes);
-app.use('/v1/user', userRoutes);
+app.use('/v2/user', userRoutes);
 
 const PORT = 3000;
 app.listen(PORT, () => {
